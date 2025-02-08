@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #if TEST_IOSTREAM
 #include "test_iostream.h"
 extern "C" void test_iostream() {
@@ -19,6 +21,7 @@ extern "C" void test_string() {}
 #endif
 
 extern "C" void app_main() {
+  printf("Running tests...\n");
   test_iostream();
   test_string();
 }
