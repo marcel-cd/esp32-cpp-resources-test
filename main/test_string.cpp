@@ -1,7 +1,10 @@
 #include "test_string.h"
+#if TEST_STRING
 #include <string>
+#endif
 
 void TestString::run() {
+#if TEST_STRING
   std::string str = "Hello, World!";
   printf("%s\n", str.c_str());
   printf("%d\n", str.size());
@@ -31,4 +34,5 @@ void TestString::run() {
   printf("%d\n", str.compare("Hello, World!"));
   printf("%d\n", str.compare(7, 5, "World"));
   printf("%d\n", str.compare(7, 5, "World", 5));
+#endif
 }
