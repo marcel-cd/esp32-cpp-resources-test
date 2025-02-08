@@ -13,12 +13,10 @@ void TestVector::run() {
   v.push_back(3);
   v.push_back(4);
 
-  printf("v.size() = %d\n", v.size());
-  v.pop_back();
-  printf("v.size() = %d\n", v.size());
-  v.pop_back();
-  printf("v.size() = %d\n", v.size());
-  v.pop_back();
+  for (std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
+    printf("%d\n", *it);
+  }
+
   printf("v.size() = %d\n", v.size());
   v.pop_back();
   printf("v.size() = %d\n", v.size());

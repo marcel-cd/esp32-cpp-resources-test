@@ -3,11 +3,18 @@ Using Github Actions to evaluate Flash / RAM size constraints, when using C++ fe
 * Results
 ** ESP-IDF Version 5.4
 *** ESP32S3
-| Flag / Feature | D/IRAM | diff to base |  Flash | diff to base | Heap alloc | diff to base |
-|----------------+--------+--------------+--------+--------------+------------+--------------|
-| bas (C)        |  54283 |            0 | 138998 |            0 |      13500 |            0 |
-| <string>       |  54435 |          152 | 144806 |         5808 |      13596 |           96 |
-| <vector>       |  54435 |          152 | 143630 |         4632 |      13596 |           96 |
-| exceptions     |  54587 |          304 | 165746 |        26748 |      14752 |         1252 |
-| <iostream>     |  60627 |         6344 | 354102 |       215104 |      13676 |          176 |
+| Feature    | D/IRAM | diff to base |  Flash | diff to base | Heap alloc | diff to base |
+|------------+--------+--------------+--------+--------------+------------+--------------|
+| (base C)   |  54283 |            0 | 138998 |            0 |      13500 |            0 |
+| string     |  54435 |          152 | 144806 |         5808 |      13596 |           96 |
+| vector     |  54435 |          152 | 143590 |         4592 |      13596 |           96 |
+| exceptions |  54587 |          304 | 165746 |        26748 |      14752 |         1252 |
+| iostream   |  60627 |         6344 | 354102 |       215104 |      13676 |          176 |
 #+TBLFM: $3=$2-@2$2::$5=($4-@2$4)::$7=($6-@2$6)
+
+* Notes
+[[https://docs.espressif.com/projects/esp-idf/en/v5.4/esp32s3/api-guides/cplusplus.html][ESP-IDF C++ Support doc]]
+** Exceptions
+Exception-throwing code should never be used in real-time critical code paths. C++ Exceptions should only be used for exceptional cases, i.e., something happening unexpectedly and occurs rarely.
+** iostream
+Simply including <iostream> header in one of the source files significantly increases the binary size by about 200 kB. (Keep C based ESP_LOG module for logging)
