@@ -18,24 +18,17 @@ jobs:
           command: idf.py build 2>&1 > /dev/null
           target: esp32s3
           path: "."
-      - name: base ize
+      - name: size without C++
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.4
           command: idf.py size -l
           target: esp32s3
           path: "."
-      - name: <iostream> build
+      - name: using <iostream> <string>
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.4
-          command: idf.py -DUSE_IOSTREAM=1 build 2>&1 > /dev/null
-          target: esp32s3
-          path: "."
-      - name: <iostream> size
-        uses: espressif/esp-idf-ci-action@v1
-        with:
-          esp_idf_version: v5.4
-          command: idf.py -DUSE_IOSTREAM=1 size -l
+          command: idf.py -DTEST_STRING=1 size -l
           target: esp32s3
           path: "."

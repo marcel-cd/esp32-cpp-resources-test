@@ -1,0 +1,8 @@
+#+title: ESP32 C++ Resource Test
+
+Using Github Actions to evaluate Flash / RAM size constraints, when using C++ features in ESP-IDF Projects
+
+| Flag          | Feature                   | RAM | Flash |
+|---------------+---------------------------+-----+-------|
+| TEST_IOSTREAM | std::cout                 |     |       |
+| TEST_STRING   | std::cout and std::string |     |       |
