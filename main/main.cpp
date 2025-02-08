@@ -32,11 +32,22 @@ extern "C" void test_vector() {
 extern "C" void test_vector() {}
 #endif
 
+#if TEST_EXCEPTION
+#include "test_exception.h"
+extern "C" void test_exception() {
+  TestException test;
+  test.run();
+}
+#else
+extern "C" void test_exception() {}
+#endif
+
 extern "C" void app_main() {
   printf("Running tests...\n");
   test_iostream();
   test_string();
   test_vector();
+  test_exception();
 
   // log heap usage
   while (1) {

@@ -15,7 +15,7 @@ jobs:
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.4
-          command: idf.py -DIDF_TARGET=esp32s3 fullclean build size size -l
+          command: idf.py -DIDF_TARGET=esp32s3 build size -l
           target: esp32s3
           path: "."
       # - name: using <string>
