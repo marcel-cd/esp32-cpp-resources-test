@@ -25,6 +25,7 @@ JLINKGDBSERVER := $(JLINK_ROOT)/JLinkGDBServer
 BUILDDIR ?= build
 
 PROJECT_NAME := $(shell basename $(CURDIR))
+TEST ?= STRING
 
 # targets
 # ---------------------------------------------------------------------------
@@ -32,7 +33,7 @@ PROJECT_NAME := $(shell basename $(CURDIR))
 
 build:
 	echo ${PATH}
-	${IDFPY} build
+	${IDFPY} -DIDF_TARGET=${IDF_TARGET} -DTEST_${TEST}=1 fullclean build size -l
 
 flash:
 	${IDFPY} flash

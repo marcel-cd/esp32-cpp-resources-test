@@ -11,38 +11,31 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: "recursive"
-      - name: base build
-        uses: espressif/esp-idf-ci-action@v1
-        with:
-          esp_idf_version: v5.4
-          command: idf.py -DIDF_TARGET=esp32s3 build 2>&1 > /dev/null
-          target: esp32s3
-          path: "."
       - name: size without C++
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.4
-          command: idf.py -DIDF_TARGET=esp32s3 size -l
+          command: idf.py -DIDF_TARGET=esp32s3 fullclean build size size -l
           target: esp32s3
           path: "."
-      - name: using <string>
-        uses: espressif/esp-idf-ci-action@v1
-        with:
-          esp_idf_version: v5.4
-          command: idf.py -DIDF_TARGET=esp32s3 -DTEST_STRING=1 size -l
-          target: esp32s3
-          path: "."
-      - name: using <vector>
-        uses: espressif/esp-idf-ci-action@v1
-        with:
-          esp_idf_version: v5.4
-          command: idf.py -DIDF_TARGET=esp32s3 -DTEST_VECTOR=1 size -l
-          target: esp32s3
-          path: "."
-      - name: using <iostream>
-        uses: espressif/esp-idf-ci-action@v1
-        with:
-          esp_idf_version: v5.4
-          command: idf.py -DIDF_TARGET=esp32s3 -DTEST_IOSTREAM=1 size -l
-          target: esp32s3
-          path: "."
+      # - name: using <string>
+      #   uses: espressif/esp-idf-ci-action@v1
+      #   with:
+      #     esp_idf_version: v5.4
+      #     command: idf.py -DIDF_TARGET=esp32s3 -DTEST_STRING=1 fullclean build size -l
+      #     target: esp32s3
+      #     path: "."
+      # - name: using <vector>
+      #   uses: espressif/esp-idf-ci-action@v1
+      #   with:
+      #     esp_idf_version: v5.4
+      #     command: idf.py -DIDF_TARGET=esp32s3 -DTEST_VECTOR=1 fullclean build size -l
+      #     target: esp32s3
+      #     path: "."
+      # - name: using <iostream>
+      #   uses: espressif/esp-idf-ci-action@v1
+      #   with:
+      #     esp_idf_version: v5.4
+      #     command: idf.py -DIDF_TARGET=esp32s3 -DTEST_IOSTREAM=1 fullclean build size -l
+      #     target: esp32s3
+      #     path: "."

@@ -1,3 +1,5 @@
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 #include <stdio.h>
 
 #if TEST_IOSTREAM
@@ -35,4 +37,10 @@ extern "C" void app_main() {
   test_iostream();
   test_string();
   test_vector();
+
+  // log heap usage
+  while (1) {
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    printf("Heap usage: %d\n", xPortGetFreeHeapSize());
+  }
 }
