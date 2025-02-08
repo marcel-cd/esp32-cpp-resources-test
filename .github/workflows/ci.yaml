@@ -11,9 +11,31 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: "recursive"
-      - name: esp-idf build
+      - name: base build
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.4
+          command: idf.py build 2>&1 > /dev/null
+          target: esp32s3
+          path: "."
+      - name: base ize
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.4
+          command: idf.py size -l
+          target: esp32s3
+          path: "."
+      - name: <iostream> build
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.4
+          command: idf.py -DUSE_IOSTREAM=1 build 2>&1 > /dev/null
+          target: esp32s3
+          path: "."
+      - name: <iostream> size
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.4
+          command: idf.py -DUSE_IOSTREAM=1 size -l
           target: esp32s3
           path: "."
