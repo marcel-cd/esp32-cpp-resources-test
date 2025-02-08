@@ -4,9 +4,10 @@ Using Github Actions to evaluate Flash / RAM size constraints, when using C++ fe
 
 * Results
 ** ESP-IDF Version 5.4
-| Flag / Feature           |  DRAM |  IRAM | RAM Diff |  Flash | Flash Diff |
-|--------------------------+-------+-------+----------+--------+------------|
-| BASE (without libstdc++) | 11212 | 52170 |        0 | 117102 |          0 |
-| using <iostream>         | 17412 | 52662 |     6692 | 331326 |     214224 |
-| using <string>           | 11292 | 52250 |      160 | 123866 |       6764 |
-#+TBLFM: $4=(($2+$3)-(@2$2 + @2$3))::$6=($5-@2$5)
+*** ESP32S3
+| Flag / Feature           | D/IRAM | RAM Diff |  Flash | Flash Diff |
+|--------------------------+--------+----------+--------+------------|
+| BASE (without libstdc++) |  54251 |        0 | 137614 |          0 |
+| using <string>           |  54403 |      152 | 144442 |       6828 |
+| using <iostream>         |  60595 |     6344 | 353746 |     216132 |
+#+TBLFM: $3=$2-@2$2::$5=($4-@2$4)

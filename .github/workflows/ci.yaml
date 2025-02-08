@@ -15,27 +15,27 @@ jobs:
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.4
-          command: idf.py build 2>&1 > /dev/null
+          command: idf.py -DIDF_TARGET=esp32s3 build 2>&1 > /dev/null
           target: esp32s3
           path: "."
       - name: size without C++
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.4
-          command: idf.py size -l
+          command: idf.py -DIDF_TARGET=esp32s3 size -l
+          target: esp32s3
+          path: "."
+      - name: using <string>
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.4
+          command: idf.py -DIDF_TARGET=esp32s3 -DTEST_STRING=1 size -l
           target: esp32s3
           path: "."
       - name: using <iostream>
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.4
-          command: idf.py -DTEST_IOSTREAM=1 size -l
-          target: esp32s3
-          path: "."
-      - name: using <iostream> <string>
-        uses: espressif/esp-idf-ci-action@v1
-        with:
-          esp_idf_version: v5.4
-          command: idf.py -DTEST_STRING=1 size -l
+          command: idf.py -DIDF_TARGET=esp32s3 -DTEST_IOSTREAM=1 size -l
           target: esp32s3
           path: "."
