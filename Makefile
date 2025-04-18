@@ -1,46 +1,46 @@
-export IDF_TARGET := esp32s3
-# when changing the IDF, rerun install.sh in the esp-idf directory
-MAKEFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+#  SPDX-FileCopyrightText: Copyright 2025 Clever Design (Switzerland) GmbH
+#  SPDX-License-Identifier: Apache-2.0
 
-# change this, to adapt to your environment
-export IDF_PATH := $(HOME)/_dev/_lib/esp-idf_54
-export IDF_BUILD := $(HOME)/.espressif
-export IDF_COMPILER_VERSION := 14.2.0_20241119
-export IDF_PY := idf5.4_py3.13
+## Select the esp target to build (esp32 / esp32s3 / exp32c6 / ....)
+ESP_TARGET := esp32s3
+## Select the zephyr target/board to build
+ZEPHYR_TARGET := native_sim/native/64
+## Select the Application
+BUILD_DIR := build
+# include common makefile
+include tools/make/makefile.mk
 
-# MACOS
-# export IDF_PY := idf5.3_py3.9
+# import settings for the used Platform
+ifneq (,$(findstring esp,$(MAKECMDGOALS)))
+include tools/make/espidf-54.mk
+endif
 
-export IDF_TOOLS_PATH := $(IDF_BUILD)
-export IDF_PYTHON_ENV_PATH := $(IDF_TOOLS_PATH)/python_env/$(IDF_PY)_env
-PATH := ${IDF_PATH}/tools:${IDF_PATH}/components/esptool_py/esptool:${IDF_PATH}/components/espcoredump:${IDF_PATH}:/components/partition_table:${IDF_PATH}/components/app_update:${IDF_BUILD}/tools/xtensa-esp-elf/esp-${IDF_COMPILER_VERSION}/xtensa-esp-elf/bin:$(IDF_BUILD)/python_env/${IDF_PY}_env/bin:$(PATH)
-SHELL := /bin/bash
-IDFPY := ${IDF_PATH}/tools/idf.py
+export CMAKE_GENERATOR=Ninja
 
-RC ?= /usr/bin/rc
-JLINK_ROOT := /usr/bin
-GDB_PORT_NUMBER = 2331
-JLINKGDBSERVER := $(JLINK_ROOT)/JLinkGDBServer
+TESTS := "-DTEST_IOSTREAM=1"
 
-BUILDDIR ?= build
-
-PROJECT_NAME := $(shell basename $(CURDIR))
-TEST ?= STRING
-
-# targets
+# ESP-IDF specific targets
 # ---------------------------------------------------------------------------
-.PHONY: cmake all build flash clean size proto
+.PHONY: esp esp.build esp.flash esp.clean esp.linux
 
-build:
-	echo ${PATH}
-	${IDFPY} -DIDF_TARGET=${IDF_TARGET} -DTEST_${TEST}=1 fullclean build size -l
+esp: esp.clean esp.build ## clean and build for the selected TARGET
 
-flash:
-	${IDFPY} flash
+esp.build: ## (re)compile for the selected TARGET
+	@echo "Building for ${var1}"
+	${IDFPY} -B ${BUILD_DIR} -DIDF_TARGET=${ESP_TARGET} ${TESTS} build size -l
 
-clean:
-	rm -rf ${BUILDDIR} && rm sdkconfig
+esp.flash: esp.build ## Flash the firmware to ESP32
+	${IDFPY} -B ${BUILD_DIR} flash
 
-size:
-	${IDFPY} size-components --format csv --output-file ${BUILDDIR}/size.csv
+## Delete build directory and tyconfig
+esp.clean:
+	$(RMDIR) ${BUILD_DIR} && $(RM) sdkconfig
 
+esp.size: ## (re)compile for the selected TARGET
+	@echo "Building for ${var1}"
+	${IDFPY} -B ${BUILD_DIR} -DIDF_TARGET=${ESP_TARGET} ${TESTS} size-components
+
+## Build the firmware for host execution (Linux only)
+## This will start the monitor
+esp.linux:
+	${IDFPY} -B ${BUILD_DIR} ${TESTS} --preview set-target linux build monitor
